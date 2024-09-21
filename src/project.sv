@@ -18,20 +18,34 @@ module tt_um_anders_tt_6502 (
 
   // All output pins must be assigned. If not used, assign to 0.
 //  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
 
-  reg [7:0]mem[16];
-  reg [7:0]memout;
-  always_ff @(posedge clk) begin
-      if (ui_in[7])
-          mem[ui_in[3:0]] <= uio_in[7:0];
-      memout <= mem[ui_in[3:0]];
-  end
+wire we;
+wire [15:0]ab;
+cpu cpu_inst (
+    .clk,
+    .reset (~rst_n),
+    .AB (ab),
+    .DI (uio_in),
+    .DO (uio_out),
+    .WE (we),
+    .IRQ (ui_in[6]),
+    .NMI (ui_in[7]),
+    .RDY (ui_in[4])
+);
 
-  assign uo_out = memout;
+logic [7:0]out;
+always_comb begin
+    unique casez (ui_in[1:0])
+       2'b00: out = ab[7:0];
+       2'b01: out = ab[15:8];
+       2'b1?: out = { 7'b0, we };
+    endcase
+end
+
+assign uo_out = out;
+assign uio_oe = we ? 8'hff : 0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ui_in[6:4], ena, clk, rst_n, 1'b0};
+  wire _unused = &{ui_in[3:2], ui_in[5], ena, clk, rst_n, 1'b0};
 
 endmodule
