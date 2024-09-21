@@ -9,12 +9,12 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+This thing is to test how big a 6502 is.
 
 ## How to test
 
-Explain how to use your project
+This thing is to test how big a 6502 is.
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+Ipsum Lorem List external hardware used in your project (e.g. PMOD, LED display, etc), if any
