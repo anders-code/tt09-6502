@@ -31,6 +31,11 @@
   "//": "https://tinytapeout.com/faq/#how-can-i-map-an-additional-external-clock-to-one-of-the-gpios",
   "CLOCK_PORT": "clk",
 
+  "//": "array of strings to be added to -D",
+  "VERILOG_DEFINES": [
+    "TT_SYNTH=1"
+  ],
+
   "//": "Configuration docs: https://openlane.readthedocs.io/en/latest/reference/configuration.html",
 
   "//": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",

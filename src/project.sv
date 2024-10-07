@@ -24,7 +24,7 @@ wire [23:0]ab;
 wire  [7:0]dout;
 wire  [7:0]din;
 wire ready;
-cpu cpu_inst (
+cpu_6502 cpu_inst (
     .clk,
     .reset (!rst_n),
     .AB  (ab[15:0]),

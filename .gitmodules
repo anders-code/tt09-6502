@@ -1,0 +1,4 @@
+[submodule "arlet-6502"]
+	path = arlet-6502
+	url = ../arlet-6502.git
+	branch = master

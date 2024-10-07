@@ -18,9 +18,9 @@ project:
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
     - "project.sv"
-    - "ALU.v"
-    - "cpu.v"
-    - "spi_sram_master.sv"
+    - "../arlet-6502/rtl/alu_6502.v"
+    - "../arlet-6502/rtl/cpu_6502.v"
+    - "../arlet-6502/rtl/spi_sram_master.sv"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
