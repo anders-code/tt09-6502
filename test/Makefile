@@ -10,7 +10,8 @@ PROJECT_SOURCES = project.sv ALU.v cpu.v
 ifneq ($(GATES),yes)
 
 # RTL simulation:
-SIM_BUILD				= sim_build/rtl
+SIM_BUILD        = sim_build/rtl
+COMPILE_ARGS    += -DCONFIG_TT=1 -DSIM=1
 VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
 COMPILE_ARGS 		+= -I$(SRC_DIR)
 
