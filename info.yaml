@@ -8,7 +8,7 @@ project:
   clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
-  tiles: "2x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
+  tiles: "1x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
   top_module:  "tt_um_anders_tt_6502"
@@ -18,8 +18,8 @@ project:
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
     - "project.sv"
-    - "../arlet-6502/rtl/alu_6502.v"
-    - "../arlet-6502/rtl/cpu_6502.v"
+    - "../arlet-6502/rtl/alu_6502.sv"
+    - "../arlet-6502/rtl/cpu_6502.sv"
     - "../arlet-6502/rtl/spi_sram_master.sv"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.

@@ -35,6 +35,8 @@
   "VERILOG_DEFINES": [
     "CONFIG_TT=1"
   ],
+  "SYNTH_STRATEGY": "AREA 2",
+  "USE_LIGHTER": 1,
 
   "//": "Configuration docs: https://openlane.readthedocs.io/en/latest/reference/configuration.html",
 
