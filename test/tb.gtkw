@@ -1,0 +1,27 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Sun Nov 10 08:24:36 2024
+[*]
+[dumpfile] "/home/andy/work/tt09-6502/test/tb.vcd"
+[dumpfile_mtime] "Sun Nov 10 08:10:19 2024"
+[dumpfile_size] 11953616
+[savefile] "/home/andy/work/tt09-6502/test/tb.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] 336 492
+*-21.276716 2596000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb.
+[sst_width] 273
+[signals_width] 110
+[sst_expanded] 1
+[sst_vpaned_height] 157
+@28
+tb.clk
+tb.RDY
+tb.cs_n
+@22
+tb.state[5:0]
+@23
+tb.PC[15:0]
+[pattern_trace] 1
+[pattern_trace] 0

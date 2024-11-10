@@ -16,70 +16,49 @@ module tt_um_anders_tt_6502 (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // All output pins must be assigned. If not used, assign to 0.
-//  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
+wire nmi;
+wire irq;
+wire x;
 
-wire we;
-wire [23:0]ab;
-wire  [7:0]dout;
-wire  [7:0]din;
-wire ready;
-cpu_6502 cpu_inst (
+spi_cpu_6502 spi_cpu_inst (
     .clk,
-    .reset (!rst_n),
-    .AB  (ab[15:0]),
-    .DI  (din),
-    .DO  (dout),
-    .WE  (we),
-    .IRQ (ui_in[6]),
-    .NMI (ui_in[7]),
-    .RDY (ready)
+    .arst_n   (rst_n),
+    .nmi,
+    .irq,
+    .cs_n     (uio_out[0]),
+    .mosi     (uio_out[1]),
+    .miso     (uio_in[2]),
+    .sync     (uo_out[7]),
+    .gpin     (ui_in[7:0]),
+    .gpout    ({ x, uo_out[6:0] }),
+    .gpio_in  (uio_in[7:4]),
+    .gpio_oe  (uio_oe[7:4]),
+    .gpio_out (uio_out[7:4])
 );
 
-assign ab[23:16] = 0;
+// synchronize irq and nmi
 
-wire cs_n;
-wire miso;
-wire mosi;
+reg [1:0]nmi_sync;
+reg [1:0]irq_sync;
+always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        nmi_sync <= 2'b00;
+        irq_sync <= 2'b00;
+    end
+    else begin
+        nmi_sync <= { nmi_sync[0], ui_in[7] };
+        irq_sync <= { irq_sync[0], ui_in[6] };
+    end
+end
+assign nmi = nmi_sync[1];
+assign irq = irq_sync[1];
 
-spi_sram_master spi_sram_master_inst (
-    .clk,
-    .clk2  (!clk),
-    .rst   (!rst_n),
-    .en    (1'b1),
-    .en2   (1'b1),
-    .ready,
-    .cs_n,
-    .miso,
-    .mosi,
-    .mem_addr  (ab),
-    .mem_en    (1'b1),
-    .mem_wr    (we),
-    .mem_wdata (dout),
-    .mem_rdata (din)
-);
+assign uio_out[2]  = 0;   // miso
+assign uio_out[3]  = clk; // sclk
 
-//logic [7:0]out;
-//always_comb begin
-//    unique casez (ui_in[1:0])
-//       2'b00: out = ab[7:0];
-//       2'b01: out = ab[15:8];
-//       2'b1?: out = { 7'b0, we };
-//    endcase
-//end
+assign uio_oe[3:0] = 4'hb;
 
-assign uio_out[0] = cs_n;
-assign uio_out[1] = mosi;
-assign uio_out[3] = clk;
-assign miso = uio_in[2];
-
-assign uio_oe = 8'h0b;
-assign uio_out[2] = 0;
-assign uio_out[7:4] = 0;
-
-assign uo_out[7:0] = 0;
-
-  // List all unused inputs to prevent warnings
-  wire _unused = &{ui_in[5:0], ena, clk, rst_n, 1'b0};
+// List all unused inputs to prevent warnings
+wire _unused = &{ ena, x, 1'b0 };
 
 endmodule

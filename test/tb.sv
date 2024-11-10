@@ -52,7 +52,7 @@ wire sclk;
 
 assign ui_in[7]    = nmi;
 assign ui_in[6]    = irq;
-assign ui_in[5:0]  = 0;
+assign ui_in[5:0]  = 6'b00_0010;
 
 assign uio_in[7:3] = 0;
 assign uio_in[2]   = miso;
@@ -69,12 +69,14 @@ wire       mem_wr;
 wire  [7:0]mem_wdata;
 reg   [7:0]mem_rdata;
 
-spi_sram_slave spi_sram_slave_inst (
+spi_sram_slave #(
+    .CS_DELAY (0)
+) spi_sram_slave_inst (
     .clk  (sclk),
-    .clk2 (!sclk),
-    .rst  (!rst_n),
+    .clkb (~sclk),
+    .rst  (~rst_n),
     .en   (1'b1),
-    .en2  (1'b1),
+    .enb  (1'b1),
     .cs_n,
     .miso,
     .mosi,
@@ -97,41 +99,41 @@ end
 // fish some signals out of the gate list
 `ifdef GL_TEST
 
-wire RDY = uut.\cpu_inst.RDY ;
+wire RDY = uut.\spi_cpu_inst.cache_inst.cpu_rdy ;
 
 wire [15:0]PC = {
-    uut.\cpu_inst.PC[15] ,
-    uut.\cpu_inst.PC[14] ,
-    uut.\cpu_inst.PC[13] ,
-    uut.\cpu_inst.PC[12] ,
-    uut.\cpu_inst.PC[11] ,
-    uut.\cpu_inst.PC[10] ,
-    uut.\cpu_inst.PC[9] ,
-    uut.\cpu_inst.PC[8] ,
-    uut.\cpu_inst.PC[7] ,
-    uut.\cpu_inst.PC[6] ,
-    uut.\cpu_inst.PC[5] ,
-    uut.\cpu_inst.PC[4] ,
-    uut.\cpu_inst.PC[3] ,
-    uut.\cpu_inst.PC[2] ,
-    uut.\cpu_inst.PC[1] ,
-    uut.\cpu_inst.PC[0] 
+    uut.\spi_cpu_inst.cpu_inst.PC[15] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[14] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[13] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[12] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[11] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[10] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[9] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[8] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[7] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[6] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[5] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[4] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[3] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[2] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[1] ,
+    uut.\spi_cpu_inst.cpu_inst.PC[0] 
 };
 
 wire [5:0]state = {
-    uut.\cpu_inst.state[5] ,
-    uut.\cpu_inst.state[4] ,
-    uut.\cpu_inst.state[3] ,
-    uut.\cpu_inst.state[2] ,
-    uut.\cpu_inst.state[1] ,
-    uut.\cpu_inst.state[0]
+    uut.\spi_cpu_inst.cpu_inst.state[5] ,
+    uut.\spi_cpu_inst.cpu_inst.state[4] ,
+    uut.\spi_cpu_inst.cpu_inst.state[3] ,
+    uut.\spi_cpu_inst.cpu_inst.state[2] ,
+    uut.\spi_cpu_inst.cpu_inst.state[1] ,
+    uut.\spi_cpu_inst.cpu_inst.state[0]
 };
 
 `else
 
-wire RDY        = uut.cpu_inst.RDY;
-wire [5:0]state = uut.cpu_inst.state;
-wire [15:0]PC   = uut.cpu_inst.PC;
+wire RDY        = uut.spi_cpu_inst.cache_inst.cpu_rdy;
+wire [5:0]state = uut.spi_cpu_inst.cpu_inst.state;
+wire [15:0]PC   = uut.spi_cpu_inst.cpu_inst.PC;
 
 `endif
 
